@@ -373,3 +373,231 @@ class QuizGame:
                 fg="red"
             )
 
+    def start_timer(self):
+        self.time_left = 30
+        self.timer_running = True
+        self.update_timer()
+
+    def update_timer(self):
+        if not self.timer_running or not self.game_active:
+            return
+
+        self.time_left -= 1
+
+        if self.time_left > 10:
+            color = "darkred"
+        elif self.time_left > 5:
+            color = self.colors["timer_warning"]
+        else:
+            color = self.colors["timer_danger"]
+
+        self.timer_label.config(text=f"⏱ {self.time_left} сек", fg=color)
+
+        if self.time_left <= 0:
+            self.time_up()
+        else:
+            self.root.after(1000, self.update_timer)
+
+    def time_up(self):
+        self.timer_running = False
+        self.update_status("Время вышло!")
+
+        for btn in self.answer_buttons:
+            btn.config(state="disabled")
+
+        correct_idx = self.current_question["correct"]
+        self.answer_buttons[correct_idx].config(bg=self.colors["correct"])
+
+        self.skip_button.config(state="disabled")
+        self.hint_button.config(state="disabled")
+        self.next_button.config(state="normal")
+
+        messagebox.showwarning("Время вышло!",
+                               f"Правильный ответ: {self.current_question['answers'][correct_idx]}")
+
+    def check_answer(self, answer_index):
+        if not self.timer_running:
+            return
+
+        try:
+            self.timer_running = False
+            correct_index = self.current_question["correct"]
+
+            for btn in self.answer_buttons:
+                btn.config(state="disabled")
+
+            if answer_index == correct_index:
+                self.answer_buttons[answer_index].config(bg=self.colors["correct"])
+                self.score += 10 * self.current_question.get("difficulty", 1)
+                self.update_status("Правильно! +{} очков".format(
+                    10 * self.current_question.get("difficulty", 1)))
+
+                self.animate_correct_answer(answer_index)
+
+                self.score_label.config(text=f"Счет: {self.score}")
+
+            else:
+                self.answer_buttons[answer_index].config(bg=self.colors["incorrect"])
+                self.answer_buttons[correct_index].config(bg=self.colors["correct"])
+                self.update_status(f"Неправильно! Правильный ответ: {self.current_question['answers'][correct_index]}")
+
+            self.skip_button.config(state="disabled")
+            self.hint_button.config(state="disabled")
+            self.next_button.config(state="normal")
+
+        except Exception as e:
+            self.show_error("Ошибка проверки ответа", str(e))
+
+    def animate_correct_answer(self, button_index):
+        try:
+            btn = self.answer_buttons[button_index]
+            original_bg = self.colors["correct"]
+
+            def flash(count=0):
+                if count < 3:
+                    current_color = btn.cget("bg")
+                    new_color = "yellow" if current_color == original_bg else original_bg
+                    btn.config(bg=new_color)
+                    self.root.after(200, flash, count + 1)
+
+            flash()
+        except:
+            pass
+
+    def skip_question(self):
+        self.timer_running = False
+        self.time_up()
+
+    def show_hint(self):
+        try:
+            if not self.current_question:
+                return
+
+            correct_idx = self.current_question["correct"]
+            answers = self.current_question["answers"]
+
+            wrong_indices = [i for i in range(4) if i != correct_idx]
+            to_remove = random.sample(wrong_indices, 2)
+
+            for idx in to_remove:
+                self.answer_buttons[idx].config(
+                    text="???",
+                    state="disabled",
+                    bg="lightgray"
+                )
+
+            self.hint_button.config(state="disabled")
+            self.score = max(0, self.score - 5)
+            self.score_label.config(text=f"Счет: {self.score}")
+
+            self.update_status("Использована подсказка! -5 очков")
+
+        except Exception as e:
+            self.show_error("Ошибка подсказки", str(e))
+
+    def next_question(self):
+        self.current_question_index += 1
+
+        if self.current_question_index >= self.total_questions:
+            self.end_game()
+        else:
+            self.load_question()
+
+    def start_new_game(self):
+        try:
+            self.score = 0
+            self.current_question_index = 0
+            self.used_questions_indices.clear()
+            self.game_active = True
+
+            self.score_label.config(text="Счет: 0")
+            self.progress_label.config(text="Вопрос 0/10")
+            self.timer_label.config(text="⏱ 30 сек", fg="darkred")
+            self.category_label.config(text="")
+
+            self.question_text.config(state="normal")
+            self.question_text.delete(1.0, tk.END)
+            self.question_text.insert(1.0, "Готовьтесь к первому вопросу...")
+            self.question_text.config(state="disabled")
+
+            for btn in self.answer_buttons:
+                btn.config(text="", bg=self.colors["button_bg"], state="disabled")
+
+            self.image_label.config(image="")
+
+            self.skip_button.config(state="disabled")
+            self.hint_button.config(state="disabled")
+            self.next_button.config(state="disabled")
+
+            self.update_status("Новая игра началась! Первый вопрос через 3 секунды...")
+
+            self.root.after(3000, self.load_question)
+
+        except Exception as e:
+            self.show_error("Ошибка начала новой игры", str(e))
+
+    def end_game(self, message=None):
+        self.game_active = False
+        self.timer_running = False
+
+        if not message:
+            message = f"Игра завершена!\nВаш итоговый счет: {self.score}"
+
+        result_text = f"""
+        {message}
+
+        Правильных ответов: {self.score // 10}
+        Всего вопросов: {self.total_questions}
+
+        Спасибо за игру!
+        """
+
+        messagebox.showinfo("Игра завершена", result_text)
+
+        if messagebox.askyesno("Новая игра?", "Хотите сыграть еще раз?"):
+            self.start_new_game()
+
+    def update_status(self, message: str):
+        self.status_label.config(text=message)
+        print(f"[STATUS] {message}")
+
+    def show_error(self, title: str, message: str):
+        print(f"[ERROR] {title}: {message}")
+        messagebox.showerror(title, message)
+
+    def show_critical_error(self, message: str):
+        print(f"[CRITICAL ERROR] {message}")
+        messagebox.showerror("Критическая ошибка",
+                             f"{message}\n\nПрограмма будет закрыта.")
+
+        try:
+            self.root.destroy()
+        except:
+            pass
+
+        sys.exit(1)
+
+    def on_closing(self):
+        if messagebox.askokcancel("Выход", "Вы уверены, что хотите выйти?"):
+            self.root.destroy()
+
+    def run(self):
+        try:
+            self.root.mainloop()
+        except Exception as e:
+            self.show_critical_error(f"Критическая ошибка во время выполнения:\n{str(e)}")
+
+
+if __name__ == "__main__":
+    print("=" * 50)
+    print("Запуск Квиз-игры")
+    print("=" * 50)
+
+    try:
+        app = QuizGame()
+        app.run()
+
+    except Exception as e:
+        print(f"ФАТАЛЬНАЯ ОШИБКА: {e}")
+        messagebox.showerror("Фатальная ошибка",
+                             f"Программа завершилась с ошибкой:\n{str(e)}")
