@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 YaBrowser/25.12.0.0 Safari/537.36" version="29.2.9">
+  <diagram name="Страница-1" id="Df0jghdM5rbnHDC3fYLG">
+    <mxGraphModel dx="1137" dy="698" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;font size=&quot;3&quot;&gt;Счёт&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="30" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Вопрос ?/?" vertex="1">
+          <mxGeometry height="50" width="120" x="310" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="? сек" vertex="1">
+          <mxGeometry height="50" width="120" x="530" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Кто открыл закон всемирного тяготения ?" vertex="1">
+          <mxGeometry height="60" width="620" x="30" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;A. ...&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="30" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="B. ..." vertex="1">
+          <mxGeometry height="60" width="180" x="30" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="C. ..." vertex="1">
+          <mxGeometry height="60" width="200" x="450" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="D. ..." vertex="1">
+          <mxGeometry height="60" width="200" x="450" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Пропустить" vertex="1">
+          <mxGeometry height="30" width="120" x="30" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Подсказка" vertex="1">
+          <mxGeometry height="30" width="120" x="270" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Следующий вопрос" vertex="1">
+          <mxGeometry height="35" width="120" x="530" y="585" as="geometry" />
+        </mxCell>
+        <mxCell id="d31lcV2ypo0oAjVrhJCM-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Квиз" vertex="1">
+          <mxGeometry height="60" width="620" x="30" y="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
